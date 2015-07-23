@@ -75,15 +75,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, Greeting> {
+    private class HttpRequestTask extends AsyncTask<Void, Void, User> {
         @Override
-        protected Greeting doInBackground(Void... params) {
+        protected User doInBackground(Void... params) {
             try {
-                final String url = "http://192.168.0.2:8080/HomeNetwork/greeting";
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String encodeduserPassword = passwordEncoder.encode(returnedUser.getPassword());
+                final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=mj&password=mj@123";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
-                return greeting;
+//                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
+//                return greeting;
+
+                User user = restTemplate.getForObject(url, User.class);
+                return user;
+
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
             }
@@ -91,12 +97,20 @@ public class MainActivity extends ActionBarActivity {
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Greeting greeting) {
+//        @Override
+//        protected void onPostExecute(Greeting greeting) {
+//            TextView greetingIdText = (TextView) findViewById(R.id.id_value);
+//            TextView greetingContentText = (TextView) findViewById(R.id.content_value);
+//            greetingIdText.setText(greeting.getId());
+//            greetingContentText.setText(greeting.getContent());
+//        }
+
+
+        protected void onPostExecute(User user) {
             TextView greetingIdText = (TextView) findViewById(R.id.id_value);
             TextView greetingContentText = (TextView) findViewById(R.id.content_value);
-            greetingIdText.setText(greeting.getId());
-            greetingContentText.setText(greeting.getContent());
+            greetingIdText.setText(user.getUserName());
+            greetingContentText.setText(user.getUserRole());
         }
 
     }
