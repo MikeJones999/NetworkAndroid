@@ -7,4 +7,10 @@
     <string name="content_value">[content]</string>
     <string name="action_refresh">Refresh</string>
 
+
+    <string name="userNameHint">[Enter UserName]</string>
+    <string name="passwordHint">[password]</string>
+    <string name="ButtonSendUserDetails">Submit</string>
+
+
 </resources>
