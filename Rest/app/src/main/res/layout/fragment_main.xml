@@ -42,17 +42,26 @@
         android:layout_alignTop="@+id/content_label"
         android:layout_alignLeft="@+id/id_value" />
 
-<!--
-    <EditText
-        android:id="@+id/userName_label"
-        android:text="@string/userName_label"
+
+    <TextView
+        android:id="@+id/result"
+        android:text="@string/result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/result_value" />
+
+    <TextView
+        android:id="@+id/result_value"
+        android:text="@string/result_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/content_value"
-        android:layout_alignParentLeft="true"
-        android:imeOptions="actionSend" />
--->
+        android:layout_alignParentLeft="true" />
+
+
+
+
 
     <EditText
         android:id="@+id/userName"
@@ -60,9 +69,11 @@
         android:hint="@string/userNameHint"
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
-        android:layout_above="@+id/password"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/ipaddress"
+        android:layout_alignEnd="@+id/ipaddress"
+        android:layout_toRightOf="@+id/result_value"
+        android:layout_toEndOf="@+id/result_value" />
 
     <EditText
         android:id="@+id/password"
@@ -70,9 +81,30 @@
         android:hint="@string/passwordHint"
         android:inputType="textEmailAddress"
         android:layout_width="wrap_content"
-        android:layout_above="@+id/ButtonSendUserDetails" />
+        android:layout_below="@+id/userName"
+        android:layout_toRightOf="@+id/result_value"
+        android:layout_toEndOf="@+id/result_value" />
 
 
+    <EditText
+        android:id="@+id/ipaddress"
+        android:layout_height="wrap_content"
+        android:hint="@string/ipaddress"
+        android:inputType="textUri"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/result_value"
+        android:layout_toEndOf="@+id/result_value"
+        android:layout_below="@+id/password"/>
+
+    <EditText
+        android:id="@+id/portaddress"
+        android:layout_height="wrap_content"
+        android:hint="@string/portaddress"
+        android:inputType="number"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/result_value"
+        android:layout_toEndOf="@+id/result_value"
+        android:layout_below="@+id/ipaddress"/>
 
 
     <Button
@@ -82,7 +114,8 @@
         android:onClick="sendUserDetails"
         android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="181dp">
+        android:layout_toLeftOf="@+id/content_value"
+        android:layout_toStartOf="@+id/content_value">
     </Button>
 
 </RelativeLayout>

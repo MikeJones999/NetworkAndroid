@@ -40,7 +40,8 @@ public class MainActivity extends ActionBarActivity {
     EditText userName;
     EditText password;
     Button ButtonSendUserDetails;
-
+    EditText ipAddress;
+    EditText portAddress;
 
 
 
@@ -156,9 +157,15 @@ public class MainActivity extends ActionBarActivity {
 
             String userPassword = password.getText().toString();
 
+            String ipToSearch = ipAddress.getText().toString();
+
+            String portToSearch = portAddress.getText().toString();
+
             //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
             try {
-                final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
+                //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
+
+                final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 //                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
@@ -176,11 +183,25 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-        protected void onPostExecute(User user) {
+        protected void onPostExecute(User user)
+        {
+
             TextView greetingIdText = (TextView) findViewById(R.id.id_value);
             TextView greetingContentText = (TextView) findViewById(R.id.content_value);
-            greetingIdText.setText(user.getUserName());
-            greetingContentText.setText(user.getUserRole());
+            TextView result_value = (TextView) findViewById(R.id.result_value);
+
+            if (user != null)
+            {
+                result_value.setText("GRANTED");
+                greetingIdText.setText(user.getUserName());
+                greetingContentText.setText(user.getUserRole());
+            }
+            else
+            {
+                result_value.setText("DENIED - Please try again");
+                greetingIdText.setText("");
+                greetingContentText.setText("");
+            }
 
         }
 
@@ -198,7 +219,14 @@ public class MainActivity extends ActionBarActivity {
         password = (EditText) findViewById(R.id.password);
         //create button object
         ButtonSendUserDetails = (Button) findViewById(R.id.ButtonSendUserDetails);
-//        String username = userName.getText().toString();
+
+
+        ipAddress = (EditText) findViewById(R.id.ipaddress);
+        portAddress = (EditText) findViewById(R.id.portaddress);
+
+
+
+         //        String username = userName.getText().toString();
 //
 //        String userPassword = password.getText().toString();
 

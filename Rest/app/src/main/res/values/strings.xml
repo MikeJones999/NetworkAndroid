@@ -8,9 +8,16 @@
     <string name="action_refresh">Refresh</string>
 
 
+    <string name="result">Access: </string>
+    <string name="result_value"></string>
+
     <string name="userNameHint">[Enter UserName]</string>
     <string name="passwordHint">[password]</string>
     <string name="ButtonSendUserDetails">Submit</string>
+
+    <string name="ipaddress">[Ip address. e.g. 192.168.0.8]</string>
+    <string name="portaddress">[Port No. e.g. 8080]</string>
+
 
 
 </resources>
