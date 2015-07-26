@@ -18,6 +18,16 @@
     <string name="ipaddress">[Ip address. e.g. 192.168.0.8]</string>
     <string name="portaddress">[Port No. e.g. 8080]</string>
 
+    <string name="ButtonChooseFolder">Choose file</string>
+    <string name="title_activity_display_result">Display Login</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="userName_label">The User is:</string>
+    <string name="userName_value">[User Name]</string>
+    <string name="access">Access:</string>
+    <string name="access_value">Access level</string>
+
 
 
 </resources>

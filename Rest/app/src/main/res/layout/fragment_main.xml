@@ -46,18 +46,22 @@
     <TextView
         android:id="@+id/result"
         android:text="@string/result"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/result_value" />
+        android:layout_alignBaseline="@+id/result_value"
+        android:layout_alignBottom="@+id/result_value"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/result_value"
         android:text="@string/result_value"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/content_value"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginTop="61dp"
+        android:layout_below="@+id/content_label"
+        android:layout_toRightOf="@+id/content_label"
+        android:layout_toEndOf="@+id/content_label" />
 
 
 
@@ -70,10 +74,8 @@
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/ipaddress"
-        android:layout_alignEnd="@+id/ipaddress"
-        android:layout_toRightOf="@+id/result_value"
-        android:layout_toEndOf="@+id/result_value" />
+        android:layout_alignLeft="@+id/result"
+        android:layout_alignStart="@+id/result" />
 
     <EditText
         android:id="@+id/password"
@@ -82,8 +84,10 @@
         android:inputType="textEmailAddress"
         android:layout_width="wrap_content"
         android:layout_below="@+id/userName"
-        android:layout_toRightOf="@+id/result_value"
-        android:layout_toEndOf="@+id/result_value" />
+        android:layout_alignLeft="@+id/userName"
+        android:layout_alignStart="@+id/userName"
+        android:layout_alignRight="@+id/userName"
+        android:layout_alignEnd="@+id/userName" />
 
 
     <EditText
@@ -92,9 +96,9 @@
         android:hint="@string/ipaddress"
         android:inputType="textUri"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@+id/result_value"
-        android:layout_toEndOf="@+id/result_value"
-        android:layout_below="@+id/password"/>
+        android:layout_below="@+id/password"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password" />
 
     <EditText
         android:id="@+id/portaddress"
@@ -102,20 +106,34 @@
         android:hint="@string/portaddress"
         android:inputType="number"
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@+id/result_value"
-        android:layout_toEndOf="@+id/result_value"
-        android:layout_below="@+id/ipaddress"/>
+        android:layout_below="@+id/ipaddress"
+        android:layout_alignLeft="@+id/ipaddress"
+        android:layout_alignStart="@+id/ipaddress" />
 
 
     <Button
-        android:id="@+id/ButtonSendUserDetails"
+    android:id="@+id/ButtonSendUserDetails"
+    android:layout_height="wrap_content"
+    android:text="@string/ButtonSendUserDetails"
+    android:onClick="sendUserDetails"
+    android:layout_width="wrap_content"
+        android:layout_below="@+id/portaddress"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignEnd="@+id/password"
+        android:layout_alignLeft="@+id/portaddress"
+        android:layout_alignStart="@+id/portaddress">
+</Button>
+
+
+    <Button
+        android:id="@+id/ButtonChooseFolder"
         android:layout_height="wrap_content"
-        android:text="@string/ButtonSendUserDetails"
-        android:onClick="sendUserDetails"
+        android:text="@string/ButtonChooseFolder"
+        android:onClick="chooseFileButton"
         android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/content_value"
-        android:layout_toStartOf="@+id/content_value">
+        android:layout_alignRight="@+id/content_value"
+        android:layout_alignEnd="@+id/content_value">
     </Button>
 
 </RelativeLayout>

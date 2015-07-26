@@ -1,7 +1,13 @@
 package com.example.mikiej.rest;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -14,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +50,8 @@ public class MainActivity extends ActionBarActivity {
     EditText ipAddress;
     EditText portAddress;
 
-
+    //static int IMAGE_SELECTED = 1;
+    public final static String USERNAME = "com.example.mikiej.rest.MESSAGE";
 
 
 
@@ -203,6 +211,8 @@ public class MainActivity extends ActionBarActivity {
                 greetingContentText.setText("");
             }
 
+
+
         }
 
     }
@@ -247,6 +257,66 @@ public class MainActivity extends ActionBarActivity {
 //            //return null;
 //        }
     }
+
+
+    public void chooseFileButton(View view)
+    {
+        //open folder  //ref: http://stackoverflow.com/questions/17165972/android-how-to-open-a-specific-folder-via-intent-and-show-its-content-in-a-file 26/07/2015
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/myFolder/");
+//        intent.setDataAndType(uri, "text/csv");
+//        startActivity(Intent.createChooser(intent, "Open folder"));
+
+        //must be passed a view
+        Intent intent = new Intent(this, DisplayResultActivity.class);
+        intent.putExtra(USERNAME, userName.getText().toString());
+
+        startActivity(intent);
+
+
+        //select file
+//        Intent i = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//        startActivityForResult(i, IMAGE_SELECTED);
+
+
+    }
+
+
+    public void sendFile()
+    {
+
+
+    }
+
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == IMAGE_SELECTED && resultCode == RESULT_OK && null != data) {
+//            Uri selectedImage = data.getData();
+//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//
+//            Cursor cursor = getContentResolver().query(selectedImage,
+//                    filePathColumn, null, null, null);
+//            cursor.moveToFirst();
+//
+//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            String picturePath = cursor.getString(columnIndex);
+//            cursor.close();
+//
+//            ImageView imageView = (ImageView) findViewById(R.id.imgView);
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//
+//        }
+//
+//
+//    }
+
 
 
 }
