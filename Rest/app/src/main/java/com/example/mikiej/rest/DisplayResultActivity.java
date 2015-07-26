@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 
 public class DisplayResultActivity extends ActionBarActivity {
 
@@ -23,6 +25,15 @@ public class DisplayResultActivity extends ActionBarActivity {
         String userName = intent.getStringExtra(MainActivity.USERNAME);
 
 
+
+//        Bundle passedUserBundle = new Bundle();
+//
+//        passedUserBundle = getIntent().getExtras();
+//        HashMap<String, Object> tempHM = new HashMap<String, Object>();
+//        tempHM = (HashMap<String, Object>)passedUserBundle.getSerializable("returnedUser");
+//        User userFound = (User) tempHM.get("hmHoldingUser");
+
+
         TextView userNameLabel = (TextView) findViewById(R.id.userName_value);
 
 
@@ -31,14 +42,6 @@ public class DisplayResultActivity extends ActionBarActivity {
         access_value.setText("GRANTED");
         userNameLabel.setText(userName);
 
-
-
-
-
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container1, new PlaceholderFragment()).commit();
-//        }
 
     }
 

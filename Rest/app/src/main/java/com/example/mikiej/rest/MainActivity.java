@@ -36,6 +36,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
@@ -180,6 +181,7 @@ public class MainActivity extends ActionBarActivity {
 //                return greeting;
 
                 User user = restTemplate.getForObject(url, User.class);
+
                 return user;
 
             } catch (Exception e) {
@@ -198,11 +200,28 @@ public class MainActivity extends ActionBarActivity {
             TextView greetingContentText = (TextView) findViewById(R.id.content_value);
             TextView result_value = (TextView) findViewById(R.id.result_value);
 
+
             if (user != null)
             {
                 result_value.setText("GRANTED");
                 greetingIdText.setText(user.getUserName());
                 greetingContentText.setText(user.getUserRole());
+                String name = userName.getText().toString();
+                String role = user.getUserRole();
+                Intent intent = new Intent(MainActivity.this, DisplayResultActivity.class);
+                intent.putExtra(USERNAME, userName.getText().toString());
+
+                //send the user as a bundle to pass as an object to next activity
+//                LinkedHashMap<String, Object> tempHM = new LinkedHashMap<String, Object>();
+//                tempHM.put("userToPass", user);
+//                Bundle userBundle = new Bundle();
+//                userBundle.putSerializable("hmHoldingUser", tempHM);
+//
+
+
+                startActivity(intent);
+
+
             }
             else
             {
