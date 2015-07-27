@@ -53,4 +53,40 @@
         android:layout_alignLeft="@+id/userName_value"
         android:layout_alignStart="@+id/userName_value" />
 
+    <ImageView
+        android:id="@+id/imageViewer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+         android:layout_below="@+id/access"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="18dp">
+
+    </ImageView>
+
+
+
+    <Button
+        android:id="@+id/ButtonChooseFolder"
+        android:layout_height="wrap_content"
+        android:text="@string/ButtonChooseFolder"
+        android:layout_width="wrap_content"
+        android:layout_weight="0"
+        android:layout_alignParentBottom="true">
+    </Button>
+
+
+    <Button
+        android:id="@+id/SubmitFile"
+        android:layout_height="wrap_content"
+        android:text="@string/SubmitFile"
+        android:layout_width="wrap_content"
+        android:layout_weight="0"
+        android:layout_alignTop="@+id/ButtonChooseFolder"
+        android:layout_alignRight="@+id/imageViewer"
+        android:layout_alignEnd="@+id/imageViewer"
+        android:onClick="uploadFile">
+    </Button>
+
 </RelativeLayout>

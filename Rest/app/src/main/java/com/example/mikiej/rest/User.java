@@ -1,9 +1,11 @@
 package com.example.mikiej.rest;
 
+import java.io.Serializable;
+
 /**
  * Created by mikieJ on 23/07/2015.
  */
-public class User {
+public class User implements Serializable {
 
     private String userName;
     //private String email;

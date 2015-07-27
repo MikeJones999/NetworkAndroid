@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
     EditText ipAddress;
     EditText portAddress;
 
-    //static int IMAGE_SELECTED = 1;
+
     public final static String USERNAME = "com.example.mikiej.rest.MESSAGE";
 
 
@@ -162,19 +162,19 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected User doInBackground(Void... params) {
 
-            String username = userName.getText().toString();
+//            String username = userName.getText().toString();
+//
+//            String userPassword = password.getText().toString();
+//
+//            String ipToSearch = ipAddress.getText().toString();
+//
+//            String portToSearch = portAddress.getText().toString();
 
-            String userPassword = password.getText().toString();
-
-            String ipToSearch = ipAddress.getText().toString();
-
-            String portToSearch = portAddress.getText().toString();
-
-            //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
+            final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
             try {
                 //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
 
-                final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
+               // final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 //                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
@@ -211,12 +211,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(MainActivity.this, DisplayResultActivity.class);
                 intent.putExtra(USERNAME, userName.getText().toString());
 
-                //send the user as a bundle to pass as an object to next activity
-//                LinkedHashMap<String, Object> tempHM = new LinkedHashMap<String, Object>();
-//                tempHM.put("userToPass", user);
-//                Bundle userBundle = new Bundle();
-//                userBundle.putSerializable("hmHoldingUser", tempHM);
-//
+                intent.putExtra("userObject", user);
 
 
                 startActivity(intent);

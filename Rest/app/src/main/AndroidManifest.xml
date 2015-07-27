@@ -6,15 +6,9 @@
         android:minSdkVersion="7"
         android:targetSdkVersion="19" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
-    <android:uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
+    <!-- need this to gain acces sto writing out an image to screen -->
+
 
     <application
         android:allowBackup="true"
@@ -33,7 +27,9 @@
         <activity
             android:name=".DisplayResultActivity"
             android:label="@string/title_activity_display_result"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.mikiej.rest.MainActivity" />
@@ -42,6 +38,9 @@
 
     </application>
 
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 </manifest>
