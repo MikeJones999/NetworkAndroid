@@ -31,11 +31,20 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.http.HttpAuthentication;
+import org.springframework.http.HttpBasicAuthentication;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -100,8 +109,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
 
-            new HttpRequestTask().execute();
-            return true;
+//            new HttpRequestTask().execute();
+//            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -157,7 +166,7 @@ public class MainActivity extends ActionBarActivity {
 //}
 
 
-
+//ref: https://github.com/spring-projects/spring-android-samples/blob/master/spring-android-basic-auth/client/src/org/springframework/android/basicauth/MainActivity.java 28/07/2015
     private class HttpRequestTask extends AsyncTask<Void, Void, User> {
         @Override
         protected User doInBackground(Void... params) {
@@ -170,19 +179,35 @@ public class MainActivity extends ActionBarActivity {
 //
 //            String portToSearch = portAddress.getText().toString();
 
-            final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
+           // final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
             try {
                 //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
 
                // final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
+//                RestTemplate restTemplate = new RestTemplate();
+//                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+//                User user = restTemplate.getForObject(url, User.class);
+                  final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
+
+//                final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
+
+                String username = "mj";
+                String userPassword ="mj@123";
+
+                //use HttpAuth to send the username and password and have spring authenticate it rather than doing it manually
+                HttpHeaders headers = new HttpHeaders();
+                HttpAuthentication auth = new HttpBasicAuthentication(username, userPassword);
+                headers.setAuthorization(auth);
+                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+                // Create a new RestTemplate instance
                 RestTemplate restTemplate = new RestTemplate();
+                //add JSON to the template for transferring of data
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-//                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
-//                return greeting;
 
-                User user = restTemplate.getForObject(url, User.class);
-
-                return user;
+                 ResponseEntity<User> user = restTemplate.exchange(serverURL, HttpMethod.GET, new HttpEntity<>(headers), User.class);
+                 //User user = restTemplate.getForObject(url, User.class);
+                return user.getBody();
 
             } catch (Exception e) {
                 Log.e("MainActivity", e.getMessage(), e);
@@ -196,18 +221,16 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(User user)
         {
 
-            TextView greetingIdText = (TextView) findViewById(R.id.id_value);
-            TextView greetingContentText = (TextView) findViewById(R.id.content_value);
-            TextView result_value = (TextView) findViewById(R.id.result_value);
-
-
+            TextView access = (TextView) findViewById(R.id.access_value);
+            TextView userN = (TextView) findViewById(R.id.userName);
+            TextView userP = (TextView) findViewById(R.id.password);
             if (user != null)
             {
-                result_value.setText("GRANTED");
-                greetingIdText.setText(user.getUserName());
-                greetingContentText.setText(user.getUserRole());
+
                 String name = userName.getText().toString();
                 String role = user.getUserRole();
+
+
                 Intent intent = new Intent(MainActivity.this, DisplayResultActivity.class);
                 intent.putExtra(USERNAME, userName.getText().toString());
 
@@ -220,9 +243,9 @@ public class MainActivity extends ActionBarActivity {
             }
             else
             {
-                result_value.setText("DENIED - Please try again");
-                greetingIdText.setText("");
-                greetingContentText.setText("");
+                access.setText("DENIED - Please try again");
+                userN.setText("");
+                userP.setText("");
             }
 
 
@@ -299,37 +322,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    public void sendFile()
-    {
 
-
-    }
-
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == IMAGE_SELECTED && resultCode == RESULT_OK && null != data) {
-//            Uri selectedImage = data.getData();
-//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//
-//            Cursor cursor = getContentResolver().query(selectedImage,
-//                    filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//
-//            ImageView imageView = (ImageView) findViewById(R.id.imgView);
-//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//
-//        }
-//
-//
-//    }
 
 
 

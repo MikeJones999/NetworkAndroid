@@ -5,9 +5,9 @@
     <string name="id_value">[id]</string>
     <string name="content_label">Their Role is:</string>
     <string name="content_value">[content]</string>
-    <string name="action_refresh">Refresh</string>
+    <string name="action_help">Help</string>
 
-
+    <string name="Welcome">Welcome to the Home Network Server App</string>
     <string name="result">Access: </string>
     <string name="result_value"></string>
 
