@@ -61,11 +61,10 @@
         android:id="@+id/imageViewer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-         android:layout_below="@+id/access"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="18dp">
+        android:layout_below="@+id/access"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp">
 
     </ImageView>
 
@@ -76,7 +75,6 @@
         android:layout_height="wrap_content"
         android:text="@string/ButtonChooseFolder"
         android:layout_width="wrap_content"
-        android:layout_weight="0"
         android:layout_alignParentBottom="true">
     </Button>
 
@@ -86,11 +84,34 @@
         android:layout_height="wrap_content"
         android:text="@string/SubmitFile"
         android:layout_width="wrap_content"
-        android:layout_weight="0"
         android:layout_alignTop="@+id/ButtonChooseFolder"
         android:layout_alignRight="@+id/imageViewer"
         android:layout_alignEnd="@+id/imageViewer"
         android:onClick="uploadFile">
     </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="File:"
+        android:id="@+id/fileChosen"
+        android:layout_below="@+id/access"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#fffffdfb" />
+
+
+    <TextView
+        android:id="@+id/fileChosen_value"
+        android:text="@string/fileChosen_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffffff"
+        android:layout_below="@+id/access_value"
+        android:layout_alignLeft="@+id/access_value"
+        android:layout_alignStart="@+id/access_value"
+        android:layout_alignRight="@+id/access_value"
+        android:layout_alignEnd="@+id/access_value" />
 
 </RelativeLayout>

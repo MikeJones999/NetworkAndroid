@@ -24,7 +24,8 @@ android:background="@drawable/background"
         android:layout_height="40dp"
         android:layout_below="@+id/Welcome"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="21dp" />
+        android:layout_marginTop="21dp"
+        android:textColor="#ffff0018" />
 
 
     <EditText
@@ -34,7 +35,9 @@ android:background="@drawable/background"
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_above="@+id/password"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff" />
 
     <EditText
         android:id="@+id/password"
@@ -43,7 +46,9 @@ android:background="@drawable/background"
         android:inputType="textPassword"
         android:layout_width="wrap_content"
         android:layout_above="@+id/ipaddress"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffffff"
+        android:textColor="#ffffffff" />
 
 
     <EditText
@@ -53,7 +58,9 @@ android:background="@drawable/background"
         android:inputType="textUri"
         android:layout_width="wrap_content"
         android:layout_above="@+id/portaddress"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#ffffffff"
+        android:textColor="#ffffffff" />
 
     <EditText
         android:id="@+id/portaddress"
@@ -64,7 +71,8 @@ android:background="@drawable/background"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="148dp"
-        android:textColor="#ff000000" />
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff" />
 
 
     <Button

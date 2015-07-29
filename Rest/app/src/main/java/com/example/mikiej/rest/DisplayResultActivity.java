@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -42,6 +44,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.charset.Charset;
 
@@ -131,6 +134,10 @@ public class DisplayResultActivity extends Activity {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        imageToSend = null;
+        imagePath = "";
+
+
         if (requestCode == IMAGE_SELECTED && resultCode == RESULT_OK && null != data)
         {
             ImageView image = (ImageView) findViewById(R.id.imageViewer);
@@ -146,12 +153,20 @@ public class DisplayResultActivity extends Activity {
             imagePath = cursor.getString(index);
             cursor.close();
 
-            TextView userNameLabel = (TextView) findViewById(R.id.userName_value);
-            userNameLabel.setText("****DEBUG***** path: " + imagePath);
+            TextView fileChosen = (TextView) findViewById(R.id.fileChosen_value);
+            //get filename
+            String splitFileLocation[] = imagePath.split("/");
+            fileName = splitFileLocation[splitFileLocation.length - 1];
+
+
+            fileChosen.setText(fileName);
 
             image.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
             Log.d("imageloaded", "***DEBUG***   image found");
+
+
+
 
 
 
@@ -165,7 +180,7 @@ public class DisplayResultActivity extends Activity {
     public void uploadFile(View view)
     {
         //imagePath = "storage/extSdCard/DCIM/Camera/20141129_140410.jpg";
-        imagePath = "/storage/extSdCard/DCIM/Camera/20150725_164220.jpg";
+       // imagePath = "/storage/extSdCard/DCIM/Camera/20150725_164220.jpg";
 
         Log.d("uploadMethod", "***DEBUG***    upload method called");
 
@@ -222,9 +237,7 @@ public class DisplayResultActivity extends Activity {
             MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
             parts.add("field 1", "value 1");
 
-            //get filename
-//            String splitFileLocation[] = imagePath.split("/");
-//            fileName = splitFileLocation[splitFileLocation.length - 1];
+
 
             parts.add("file", new FileSystemResource(imagePath));
 
@@ -233,8 +246,19 @@ public class DisplayResultActivity extends Activity {
             HttpEntity<MultiValueMap<String, Object>> imageEntity = new HttpEntity<>(parts, imageHeaders);
             Log.d("part3", "***DEBUG***    part3 method called");
 //            restTemplate.postForLocation(url, parts);
-            restTemplate.exchange(url, HttpMethod.POST, imageEntity, Boolean.class);
-            return "complete";
+            Object result = restTemplate.exchange(url, HttpMethod.POST, imageEntity, Boolean.class);
+
+            String uploaded = result.toString();
+
+            if (uploaded.equals("false"))
+            {
+                Log.d ("Uploaded", "***DEBUG*** did not upload");
+            }
+            else
+            {
+                Log.d ("Uploaded", "***DEBUG*** upload correctly");
+            }
+            return uploaded;
 
 
 

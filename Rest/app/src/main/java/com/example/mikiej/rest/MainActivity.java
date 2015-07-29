@@ -171,13 +171,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected User doInBackground(Void... params) {
 
-//            String username = userName.getText().toString();
-//
-//            String userPassword = password.getText().toString();
-//
-//            String ipToSearch = ipAddress.getText().toString();
-//
-//            String portToSearch = portAddress.getText().toString();
+            String username = userName.getText().toString();
+
+            String userPassword = password.getText().toString();
+
+            String ipToSearch = ipAddress.getText().toString();
+
+            String portToSearch = portAddress.getText().toString();
 
            // final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
             try {
@@ -187,12 +187,9 @@ public class MainActivity extends ActionBarActivity {
 //                RestTemplate restTemplate = new RestTemplate();
 //                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 //                User user = restTemplate.getForObject(url, User.class);
-                  final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
+                  //final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
 
-//                final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
-
-                String username = "mj";
-                String userPassword ="mj@123";
+                  final String serverURL = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
 
                 //use HttpAuth to send the username and password and have spring authenticate it rather than doing it manually
                 HttpHeaders headers = new HttpHeaders();

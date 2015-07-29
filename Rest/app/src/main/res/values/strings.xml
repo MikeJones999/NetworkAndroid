@@ -27,6 +27,7 @@
     <string name="userName_value">[User Name]</string>
     <string name="access">Access:</string>
     <string name="access_value">Access level</string>
+    <string name="fileChosen_value"></string>
     <string name="SubmitFile">Upload File</string>
 
 
