@@ -61,10 +61,9 @@
         android:id="@+id/imageViewer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/access"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp">
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
     </ImageView>
 
@@ -105,13 +104,27 @@
     <TextView
         android:id="@+id/fileChosen_value"
         android:text="@string/fileChosen_value"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="#ffffffff"
         android:layout_below="@+id/access_value"
         android:layout_alignLeft="@+id/access_value"
-        android:layout_alignStart="@+id/access_value"
-        android:layout_alignRight="@+id/access_value"
-        android:layout_alignEnd="@+id/access_value" />
+        android:layout_alignStart="@+id/access_value" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=""
+        android:id="@+id/fileuploadcomplete"
+        android:layout_below="@+id/fileChosen"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp"
+        android:layout_alignRight="@+id/fileChosen_value"
+        android:layout_alignEnd="@+id/fileChosen_value"
+        android:textColor="#ffff0012"
+        android:textSize="18dp"
+        android:textAlignment="center" />
 
 </RelativeLayout>

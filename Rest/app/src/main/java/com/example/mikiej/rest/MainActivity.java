@@ -1,5 +1,6 @@
 package com.example.mikiej.rest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -43,6 +44,8 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -179,39 +182,75 @@ public class MainActivity extends ActionBarActivity {
 
             String portToSearch = portAddress.getText().toString();
 
-           // final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
-            try {
-                //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
+            int port =  Integer.parseInt(portToSearch);
 
-               // final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
-//                RestTemplate restTemplate = new RestTemplate();
-//                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-//                User user = restTemplate.getForObject(url, User.class);
-                  //final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
+            if(isUrlReachable(ipToSearch, port)) {
 
-                  final String serverURL = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
 
-                //use HttpAuth to send the username and password and have spring authenticate it rather than doing it manually
-                HttpHeaders headers = new HttpHeaders();
-                HttpAuthentication auth = new HttpBasicAuthentication(username, userPassword);
-                headers.setAuthorization(auth);
-                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+                // final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
+                try {
+                    //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
 
-                // Create a new RestTemplate instance
-                RestTemplate restTemplate = new RestTemplate();
-                //add JSON to the template for transferring of data
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    // final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
+                    //                RestTemplate restTemplate = new RestTemplate();
+                    //                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                    //                User user = restTemplate.getForObject(url, User.class);
+                    //final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
 
-                 ResponseEntity<User> user = restTemplate.exchange(serverURL, HttpMethod.GET, new HttpEntity<>(headers), User.class);
-                 //User user = restTemplate.getForObject(url, User.class);
-                return user.getBody();
+                    final String serverURL = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
 
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+                    //use HttpAuth to send the username and password and have spring authenticate it rather than doing it manually
+                    HttpHeaders headers = new HttpHeaders();
+                    HttpAuthentication auth = new HttpBasicAuthentication(username, userPassword);
+                    headers.setAuthorization(auth);
+                    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+                    // Create a new RestTemplate instance
+                    RestTemplate restTemplate = new RestTemplate();
+                    //add JSON to the template for transferring of data
+                    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+                    ResponseEntity<User> user = restTemplate.exchange(serverURL, HttpMethod.GET, new HttpEntity<>(headers), User.class);
+                    //User user = restTemplate.getForObject(url, User.class);
+                    return user.getBody();
+
+                }
+                catch (Exception e)
+                {
+
+                    Log.e("MainActivity", e.getMessage(), e);
+                }
+
+                return null;
+
             }
-
-            return null;
+            else
+            {
+                //poor means of setting the view
+                User temp = new User();
+                temp.setUserName("ipDenided");
+                return temp;
+            }
         }
+
+    public boolean isUrlReachable(String ipAdd, int port)
+    {
+        boolean result = false;
+        try
+        {
+            int timer = 20;
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAdd, port), timer);
+            socket.close();
+            result = true;
+            return result;
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+            return result;
+        }
+    }
 
 
 
@@ -223,24 +262,32 @@ public class MainActivity extends ActionBarActivity {
             TextView userP = (TextView) findViewById(R.id.password);
             if (user != null)
             {
-
-                String name = userName.getText().toString();
-                String role = user.getUserRole();
-
-
-                Intent intent = new Intent(MainActivity.this, DisplayResultActivity.class);
-                intent.putExtra(USERNAME, userName.getText().toString());
-
-                intent.putExtra("userObject", user);
+                //user the user name to identify if ip address is open or not - poor way of doing it - need new method
+                if(!user.getUserName().equals("ipDenided"))
+                {
+                    String name = userName.getText().toString();
+                    String role = user.getUserRole();
 
 
-                startActivity(intent);
+                    Intent intent = new Intent(MainActivity.this, DisplayResultActivity.class);
+                    intent.putExtra(USERNAME, userName.getText().toString());
 
+                    intent.putExtra("userObject", user);
+
+                    intent.putExtra("IPADDRESS", ipAddress.getText().toString());
+                    intent.putExtra("PORT", portAddress.getText().toString());
+
+                    startActivity(intent);
+                }
+                else
+                {
+                    access.setText("DENIED - Ip address and/or Port not responding");
+                }
 
             }
             else
             {
-                access.setText("DENIED - Please try again");
+                access.setText("DENIED - Password and/or Username incorrect");
                 userN.setText("");
                 userP.setText("");
             }

@@ -2,6 +2,7 @@ package com.example.mikiej.rest;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -46,6 +47,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 
 
@@ -55,7 +58,11 @@ public class DisplayResultActivity extends Activity {
     Uri imageToSend = null;
     String imagePath = "";
     String fileName = "";
-    String filePath ="";
+    String ipAddress = "";
+    String port = "";
+    int actualPort = 0;
+    TextView access_value = null;
+    TextView filecompleted;
 
     static int IMAGE_SELECTED = 1;
 
@@ -70,14 +77,15 @@ public class DisplayResultActivity extends Activity {
 
         //get user object passed
         user = (User) intent.getSerializableExtra("userObject");
-
         TextView userNameLabel = (TextView) findViewById(R.id.userName_value);
 
-
-        TextView access_value = (TextView) findViewById(R.id.access_value);
-
+        access_value = (TextView) findViewById(R.id.access_value);
         access_value.setText("GRANTED");
         userNameLabel.setText(user.getUserName());
+
+        ipAddress = (String) intent.getSerializableExtra("IPADDRESS");
+        port = (String) intent.getSerializableExtra("PORT");
+        actualPort = Integer.parseInt(port);
 
         Button findImage = (Button) findViewById(R.id.ButtonChooseFolder);
         findImage.setOnClickListener(new View.OnClickListener()
@@ -120,10 +128,9 @@ public class DisplayResultActivity extends Activity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_display_result,
-                    container, false);
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View rootView = inflater.inflate(R.layout.activity_display_result, container, false);
             return rootView;
         }
     }
@@ -134,6 +141,7 @@ public class DisplayResultActivity extends Activity {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //set these to null to ensure each time a new photo is selected - nothing remains of the old
         imageToSend = null;
         imagePath = "";
 
@@ -146,35 +154,73 @@ public class DisplayResultActivity extends Activity {
             String[] fileLocation = {MediaStore.Images.Media.DATA};
 
             //search data base for the path name - cursor moves from location to location (SQL)
-            Cursor cursor = getContentResolver().query(imageToSend, fileLocation, null, null, null);
-            cursor.moveToFirst();
+            Cursor pointer = getContentResolver().query(imageToSend, fileLocation, null, null, null);
+            pointer.moveToFirst();
 
-            int index = cursor.getColumnIndex(fileLocation[0]);
-            imagePath = cursor.getString(index);
-            cursor.close();
+            int index = pointer.getColumnIndex(fileLocation[0]);
+            imagePath = pointer.getString(index);
+            pointer.close();
 
             TextView fileChosen = (TextView) findViewById(R.id.fileChosen_value);
             //get filename
             String splitFileLocation[] = imagePath.split("/");
             fileName = splitFileLocation[splitFileLocation.length - 1];
-
-
             fileChosen.setText(fileName);
 
-            image.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            //this sets teh image without resizing
+            //image.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
             Log.d("imageloaded", "***DEBUG***   image found");
 
-
-
-
-
-
-
-
-
+            File file = new File(imagePath);
+            Bitmap imageFile = decodeFile(file); //Venky's method
+            imageFile = Bitmap.createScaledBitmap(imageFile,450, 450, true);
+            image.setImageBitmap(imageFile);
         }
     }
+
+
+    //REF: http://stackoverflow.com/questions/6410364/how-to-scale-bitmap-to-screen-size
+    //Author Venky - accessed 30/07/2015
+    /**
+     * Author Venky - http://stackoverflow.com/questions/6410364/how-to-scale-bitmap-to-screen-size
+     * @param File f
+     * @return Bitmap
+     */
+    private Bitmap decodeFile(File f)
+    {
+        try {
+            //decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(new FileInputStream(f),null,o);
+            //Find the correct scale value. It should be the power of 2.
+            final int REQUIRED_SIZE=70;
+            int width_tmp=o.outWidth, height_tmp=o.outHeight;
+            int scale=1;
+            while(true)
+            {
+                if(width_tmp/2<REQUIRED_SIZE || height_tmp/2<REQUIRED_SIZE)
+                    break;
+                width_tmp/=2;
+                height_tmp/=2;
+                //scale++;
+                scale*=2;
+            }
+            //decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize=scale;
+            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.d("imageNotloaded", "***DEBUG***   image not resized");
+        }
+        return null;
+    }
+
+
+
 
 
     public void uploadFile(View view)
@@ -187,56 +233,55 @@ public class DisplayResultActivity extends Activity {
         if (imagePath !="")
         {
             Log.d("fileFound", "***DEBUG***    file found");
-            new uploadImageFiler().execute();
         }
         else
         {
             Log.d("fileFound", "***DEBUG***    no file found");
-
-            TextView access_value = (TextView) findViewById(R.id.access_value);
-
-            access_value.setText("No file found");
+            TextView access_value = (TextView) findViewById(R.id.fileChosen_value);
+            access_value.setText("No file found or selected - please try again");
         }
     }
 
 
-    private class uploadImageFiler extends AsyncTask<Void, Void, String>
+
+
+
+    private class uploadImageFiler extends AsyncTask<String, String, String>
     {
 
-
-        @Override
+           @Override
         protected void onPreExecute()
         {
-            // setting progress bar to zero
-            //progressBar.setProgress(0);
             super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(Void... params)
+        protected String doInBackground(String... params)
         {
             return beginUpload();
         }
 
+        //This needs to be reorganised and amended
         private String beginUpload()
         {
 
-
             Log.d("part1", "***DEBUG***    part1 method called");
-            final String url = "http://" + "192.168.0.19" + ":" + "8080" + "/HomeNetwork/restfulGateway/mj/upload/1";
+            final String url = "http://" + ipAddress + ":" + actualPort + "/HomeNetwork/restfulGateway/" + user.getUserName() + "/upload/1";
+
             RestTemplate restTemplate = new RestTemplate();
             FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
             formHttpMessageConverter.setCharset(Charset.forName("UTF8"));
 
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-           restTemplate.getMessageConverters().add(formHttpMessageConverter);
+            restTemplate.getMessageConverters().add(formHttpMessageConverter);
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
 
             Log.d("part2", "***DEBUG***    part2 method called");
-            MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-            parts.add("field 1", "value 1");
+            MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
 
+            //verify
+            parts.add("field 1", "value 1");
 
 
             parts.add("file", new FileSystemResource(imagePath));
@@ -245,22 +290,31 @@ public class DisplayResultActivity extends Activity {
             imageHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
             HttpEntity<MultiValueMap<String, Object>> imageEntity = new HttpEntity<>(parts, imageHeaders);
             Log.d("part3", "***DEBUG***    part3 method called");
-//            restTemplate.postForLocation(url, parts);
             Object result = restTemplate.exchange(url, HttpMethod.POST, imageEntity, Boolean.class);
 
             String uploaded = result.toString();
 
-            if (uploaded.equals("false"))
+            return uploaded;
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            filecompleted =  (TextView) findViewById(R.id.fileuploadcomplete);
+            if (result.equals("false"))
             {
                 Log.d ("Uploaded", "***DEBUG*** did not upload");
+
+                filecompleted.setText("File was not uploaded successfully - please try again. Ensure Server is on");
             }
             else
             {
                 Log.d ("Uploaded", "***DEBUG*** upload correctly");
+
+                filecompleted.setText("File was uploaded successfully");
             }
-            return uploaded;
-
-
 
         }
 
