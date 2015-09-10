@@ -5,6 +5,10 @@ import java.io.Serializable;
 /**
  * Created by mikieJ on 23/07/2015.
  */
+
+/**
+ * Object that mirrors the web server
+ */
 public class User implements Serializable {
 
     private String userName;

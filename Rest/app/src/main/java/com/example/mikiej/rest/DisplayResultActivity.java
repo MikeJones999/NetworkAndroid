@@ -66,13 +66,18 @@ public class DisplayResultActivity extends Activity {
 
     static int IMAGE_SELECTED = 1;
 
+    /**
+     * Utilised in the creation of second screen
+     * obtains the information from teh previous screen and populates the stated variables
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_result);
         Intent intent = getIntent();
 
-        //String userName = intent.getStringExtra(MainActivity.USERNAME);
+
 
 
         //get user object passed
@@ -106,12 +111,10 @@ public class DisplayResultActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
             return true;
         }
@@ -120,7 +123,7 @@ public class DisplayResultActivity extends Activity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * Used to obtain current view.
      */
     public static class PlaceholderFragment extends Fragment {
 
@@ -135,7 +138,16 @@ public class DisplayResultActivity extends Activity {
         }
     }
 
-    //ref: http://viralpatel.net/blogs/pick-image-from-galary-android-app/ 26/07/2015
+    //assistance concept ref: http://viralpatel.net/blogs/pick-image-from-galary-android-app/ 26/07/2015
+
+    /**
+     * This method is used to locate teh file identified in the choosing of file option.
+     * Once the file is identified it is returend and displayed on screen.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -167,7 +179,7 @@ public class DisplayResultActivity extends Activity {
             fileName = splitFileLocation[splitFileLocation.length - 1];
             fileChosen.setText(fileName);
 
-            //this sets teh image without resizing
+            //this sets the image without resizing
             //image.setImageBitmap(BitmapFactory.decodeFile(imagePath));
 
             Log.d("imageloaded", "***DEBUG***   image found");
@@ -183,6 +195,7 @@ public class DisplayResultActivity extends Activity {
     //REF: http://stackoverflow.com/questions/6410364/how-to-scale-bitmap-to-screen-size
     //Author Venky - accessed 30/07/2015
     /**
+     * Method used to reduce the size of an image so that it can be displayed on teh android screen
      * Author Venky - http://stackoverflow.com/questions/6410364/how-to-scale-bitmap-to-screen-size
      * @param File f
      * @return Bitmap
@@ -220,13 +233,12 @@ public class DisplayResultActivity extends Activity {
     }
 
 
-
-
-
+    /**
+     *
+     * @param view
+     */
     public void uploadFile(View view)
     {
-        //imagePath = "storage/extSdCard/DCIM/Camera/20141129_140410.jpg";
-       // imagePath = "/storage/extSdCard/DCIM/Camera/20150725_164220.jpg";
 
         Log.d("uploadMethod", "***DEBUG***    upload method called");
 
@@ -243,9 +255,9 @@ public class DisplayResultActivity extends Activity {
     }
 
 
-
-
-
+    /**
+     * Main class that has responsibility of uploading the file to the server
+     */
     private class uploadImageFiler extends AsyncTask<String, String, String>
     {
 
@@ -261,7 +273,10 @@ public class DisplayResultActivity extends Activity {
             return beginUpload();
         }
 
-        //This needs to be reorganised and amended
+        /**
+         * Method that carries out the uploading of the file to the server
+         * @return String version of boolean
+         */
         private String beginUpload()
         {
 

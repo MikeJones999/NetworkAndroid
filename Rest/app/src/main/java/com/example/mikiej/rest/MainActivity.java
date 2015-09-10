@@ -67,9 +67,10 @@ public class MainActivity extends ActionBarActivity {
     public final static String USERNAME = "com.example.mikiej.rest.MESSAGE";
 
 
-
-
-
+    /**
+     * Initial method called to instantiate the application
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +119,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -136,41 +135,20 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-//    private class HttpRequestTask extends AsyncTask<Void, Void, User> {
-//        @Override
-//        protected User doInBackground(Void... params) {
-//            try {
-//
-//                TextView userNameLabel = (TextView) findViewById(R.id.id_value);
-//
-//                final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=mj&password=mj@123";
-//                RestTemplate restTemplate = new RestTemplate();
-//                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-////                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
-////                return greeting;
-//
-//                User user = restTemplate.getForObject(url, User.class);
-//                return user;
-//
-//            } catch (Exception e) {
-//                Log.e("MainActivity", e.getMessage(), e);
-//            }
-//
-//            return null;
-//        }
-//protected void onPostExecute(User user) {
-//    TextView greetingIdText = (TextView) findViewById(R.id.id_value);
-//    TextView greetingContentText = (TextView) findViewById(R.id.content_value);
-//    greetingIdText.setText(user.getUserName());
-//    greetingContentText.setText(user.getUserRole());
-//
-//}
-//
-//}
 
+//ref: assistance from https://github.com/spring-projects/spring-android-samples/blob/master/spring-android-basic-auth/client/src/org/springframework/android/basicauth/MainActivity.java 28/07/2015
 
-//ref: https://github.com/spring-projects/spring-android-samples/blob/master/spring-android-basic-auth/client/src/org/springframework/android/basicauth/MainActivity.java 28/07/2015
+    /**
+     * Main Class used to communicate with the web server
+     */
     private class HttpRequestTask extends AsyncTask<Void, Void, User> {
+
+        /**
+         * Sets up the variables by obtaining them from the view
+         * Connects to the web server via RestTemplate object
+         * @param params
+         * @return User
+         */
         @Override
         protected User doInBackground(Void... params) {
 
@@ -187,15 +165,9 @@ public class MainActivity extends ActionBarActivity {
             if(isUrlReachable(ipToSearch, port)) {
 
 
-                // final String url = "http://192.168.0.19:8080/HomeNetwork/restfulGateway?name=mj&password=mj@123";
-                try {
-                    //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
 
-                    // final String url = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway?name=" + username + "&password=" + userPassword;
-                    //                RestTemplate restTemplate = new RestTemplate();
-                    //                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                    //                User user = restTemplate.getForObject(url, User.class);
-                    //final String serverURL = "http://192.168.0.19:8080/HomeNetwork/restfulGateway/login";
+                try {
+
 
                     final String serverURL = "http://" + ipToSearch + ":" + portToSearch + "/HomeNetwork/restfulGateway/login";
 
@@ -233,6 +205,12 @@ public class MainActivity extends ActionBarActivity {
             }
         }
 
+        /**
+         * Establishes if the ip and port address provided in the view actually exist
+         * @param ipAdd
+         * @param port
+         * @return
+         */
     public boolean isUrlReachable(String ipAdd, int port)
     {
         boolean result = false;
@@ -253,7 +231,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
+        /**
+         * On completion of the restfull communication with the server this method handles the view
+         * by displaying teh returned user details
+         * @param user
+         */
         protected void onPostExecute(User user)
         {
 
@@ -299,8 +281,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-
+    /**
+     * This method responds to the button submit being pressed in teh initial page
+     * It then creates an object of HttpRequestTask() and executes it - this start the process for communication to the web server
+     * @param Button
+     */
     public void sendUserDetails(View Button)
     {
 
@@ -316,51 +301,22 @@ public class MainActivity extends ActionBarActivity {
         portAddress = (EditText) findViewById(R.id.portaddress);
 
 
-
-         //        String username = userName.getText().toString();
-//
-//        String userPassword = password.getText().toString();
-
-        //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting?name=" + username + "&password=" + userPassword;
-        //final String url = "http://192.168.0.19:8080/HomeNetwork/greeting";
-        //check whether the msg empty or not
-//        if(username.length()>0 && userPassword.length()>0) {
-
-
-
-//                userName.setText(""); //reset the name text field
-//                password.setText(""); //reset the password text field
                 new HttpRequestTask().execute();
 
-//        } else {
-//            //display message if text field is empty
-//            Toast.makeText(getBaseContext(),"All fields are required",Toast.LENGTH_SHORT).show();
-//            //return null;
-//        }
     }
 
-
+    /**
+     * Responds to the chose file button being pressed
+     * @param view
+     */
     public void chooseFileButton(View view)
     {
-        //open folder  //ref: http://stackoverflow.com/questions/17165972/android-how-to-open-a-specific-folder-via-intent-and-show-its-content-in-a-file 26/07/2015
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/myFolder/");
-//        intent.setDataAndType(uri, "text/csv");
-//        startActivity(Intent.createChooser(intent, "Open folder"));
 
         //must be passed a view
         Intent intent = new Intent(this, DisplayResultActivity.class);
         intent.putExtra(USERNAME, userName.getText().toString());
 
         startActivity(intent);
-
-
-        //select file
-//        Intent i = new Intent(
-//                Intent.ACTION_PICK,
-//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//
-//        startActivityForResult(i, IMAGE_SELECTED);
 
 
     }
